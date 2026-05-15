@@ -1,6 +1,6 @@
 const ApiKey = "2a3b818511664fba8f345723261305";
 
-let cityInput = document.getElementById("city-input");
+const city = document.getElementById("city-input");
 const searchBtn = document.getElementById("search-btn");
 
 const container = document.getElementById("container");
@@ -13,7 +13,7 @@ const windSpeed = document.getElementById("wind-speed");
 const backBtn = document.getElementById("back-btn");
 
 const getWeather = async () => {
-  cityInput = cityInput.value;
+  let cityInput = city.value;
   if (cityInput === "") {
     Swal.fire({
       icon: "error",
@@ -27,7 +27,6 @@ const getWeather = async () => {
     const url = `http://api.weatherapi.com/v1/current.json?key=${ApiKey}&q=${cityInput}&aqi=no`;
     const response = await fetch(url);
     const data = await response.json();
-    
     if (response.status === 200) {
       Swal.fire({
         title: "Success",
@@ -45,7 +44,7 @@ const getWeather = async () => {
     }
     weatherIcon.src = `https:${data.current.condition.icon}`;
     weatherIcon.alt = data.current.condition.text;
-    temp.innerText = `${data.current.temp_c}°C`;
+    temp.innerText = `${Math.floor(data.current.temp_c)}°C`;
     cityName.innerText = data.location.name;
     condition.innerText = data.current.condition.text;
     humidity.innerText = `${data.current.humidity}%`;
@@ -59,7 +58,7 @@ const getWeather = async () => {
       icon: "error",
       title: "Oops...",
       text: "Something went wrong!",
-      footer: '<a href="#">Why do I have this issue?</a>',
+      footer: `<a href="#">Why do I have this issue?</a> ${error}`,
     });
   }
 };
